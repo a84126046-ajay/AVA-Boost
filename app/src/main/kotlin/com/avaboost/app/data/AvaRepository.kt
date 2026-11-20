@@ -85,7 +85,7 @@ class AvaRepository(private val db: AvaDatabase, private val context: Context) {
         }
         val sig = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) pkgInfo.signingInfo?.apkContentsSigners?.firstOrNull()
         else @Suppress("DEPRECATION") pkgInfo.signatures?.firstOrNull() ?: return "UNAVAILABLE"
-        MessageDigest.getInstance("SHA-256").digest(sig.toByteArray()).joinToString(":") { "%02X".format(it) }
+        MessageDigest.getInstance("SHA-256").digest((sig ?: return "UNAVAILABLE").toByteArray()).joinToString(":") { "%02X".format(it) }
     }.getOrDefault("UNAVAILABLE")
 
     private fun getPackageDetails(packageName: String): Pair<String, Boolean> {
